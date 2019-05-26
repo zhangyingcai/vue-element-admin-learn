@@ -20,7 +20,7 @@
           auto-complete="on"
         />
       </el-form-item>
-
+<!-- 点击图标显示隐藏密码 -->
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
