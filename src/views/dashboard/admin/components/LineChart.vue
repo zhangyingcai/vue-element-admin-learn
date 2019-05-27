@@ -3,7 +3,12 @@
 </template>
 
 <script>
-import echarts from 'echarts'
+// import echarts from 'echarts'
+// 按需引入
+// 引入基础模板
+import echarts from 'echarts/lib/echarts'
+// 引入图组件
+// import 'echarts/lib/chart/line'
 require('echarts/theme/macarons') // echarts theme
 //  解决line chart 不会根据页面自动缩放的问题
 export default {
