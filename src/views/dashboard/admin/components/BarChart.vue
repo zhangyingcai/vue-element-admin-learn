@@ -6,11 +6,15 @@
 // 怎么样在 vue 当中使用插件 以及 $nextTick 的使用
 // $nextTick 在下次 Dom 更新循环结束之后执行延时回调。在数据更新之后立即使用这个方法，获取更新后的 DOM
 // 使用插件时要记得销毁插件实例
-import echarts from 'echarts'
+// import echarts from 'echarts'
+// 按需引入
+import echarts from 'echarts/lib/echarts'
+import resize from '../../mixins/resize'
 // 导入echarts 主题
 require('echarts/theme/macarons')
 export default {
   name: 'bar-chart',
+  mixins:[resize],
   props: {
     className: {
       type: String,

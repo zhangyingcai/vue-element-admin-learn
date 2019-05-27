@@ -11,7 +11,9 @@ import echarts from 'echarts/lib/echarts'
 // import 'echarts/lib/chart/line'
 require('echarts/theme/macarons') // echarts theme
 //  解决line chart 不会根据页面自动缩放的问题
+import resize from '../../mixins/resize'
 export default {
+  mixins:[resize],
   props: {
     className: {
       type: String,
