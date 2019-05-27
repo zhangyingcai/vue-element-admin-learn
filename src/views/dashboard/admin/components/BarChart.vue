@@ -7,6 +7,8 @@
 // $nextTick 在下次 Dom 更新循环结束之后执行延时回调。在数据更新之后立即使用这个方法，获取更新后的 DOM
 // 使用插件时要记得销毁插件实例
 import echarts from 'echarts'
+// 导入echarts 主题
+require('echarts/theme/macarons')
 export default {
   name: 'bar-chart',
   props: {
