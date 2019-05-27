@@ -5,7 +5,7 @@
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
-
+//  解决line chart 不会根据页面自动缩放的问题
 export default {
   props: {
     className: {
@@ -36,7 +36,7 @@ export default {
   },
   watch: {
     chartData: { // 监听数据变化
-      deep: true, // deep 是什么意思？
+      deep: true, // deep 是什么意思？ 监听对象内部值的变化 相对的immediate 是表示当前值变化触发
       handler(val) {
         this.setOptions(val)
       }
