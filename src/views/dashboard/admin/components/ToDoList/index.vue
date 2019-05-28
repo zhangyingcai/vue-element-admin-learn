@@ -23,7 +23,7 @@
         <li v-for="(val, key) in filters" :key="key">
           <!-- todo a 标签的区别 -->
           <!-- 作为一个 a 标签 使用点击事件的 click 时 是否应该阻止默认事件 -->
-          <a :class="{selected: visibility === key}" @click.prevent="visibility = key">{{ key | capitalize }}</a>
+          <a :class="{selected: visibility === key}" @click.prevent="visibility = key">{{ key | capitalize(key) }}</a>
         </li>
       </ul>
       <!-- <button class="clear-completed" v-show="todos.length > remaining" @click="clearCompleted">
@@ -57,7 +57,7 @@ export default {
   filters: {
     // 一个首字母大写的过滤器
     //  使用这个方法会报错 str.toUpperCase is not a function
-    capitalize: str => str.charAt(0).toUpperCase() + str.slice(1)
+    capitalize: (n,str) => str.charAt(0).toUpperCase() + str.slice(1)
   },
   data() {
     return {
