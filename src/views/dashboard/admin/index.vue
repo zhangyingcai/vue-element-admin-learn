@@ -9,6 +9,7 @@
     </div>
     <bar-chart></bar-chart>
     <count-to-user></count-to-user>
+    <to-do-list></to-do-list>
   </div>
 </template>
 <script>
@@ -16,6 +17,7 @@ import BarChart from './components/BarChart'
 import CountToUser from './components/CountToUser';
 import PanelGroup from './components/PanelGroup';
 import LineChart from './components/LineChart';
+import ToDoList from './components/ToDoList/index'
 // linedata
 const lineChartData = {
   newVisitis: {
@@ -38,7 +40,7 @@ const lineChartData = {
 
 export default {
   name: 'DashboardAdmin',
-  components: { BarChart,CountToUser,PanelGroup,LineChart },
+  components: { BarChart,CountToUser,PanelGroup,LineChart,ToDoList },
   data() {
     return {
       chartData: lineChartData.newVisitis
