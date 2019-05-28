@@ -10,7 +10,7 @@ export default {
     this.$_initResizeEvent() // 初始化
     this.$_initSidebarResizeEvent()
   },
-  beforeDestroy() {
+  beforeDestroy() {// 销毁之前调用 ，销毁定时器、settimeout等
     this.$_destroyResizeEvent()
     this.$_destroySidebarResizeEvent()
   },
@@ -34,7 +34,8 @@ export default {
         }
       }, 100)()
     },
-    $_initResizeEvent() {
+    $_initResizeEvent() { 
+      // 为什么是 resize 方法 难道是浏览器自带的钩子？
       window.addEventListener('resize', this.$_resizeHandler)
     },
     $_destroyResizeEvent() {
