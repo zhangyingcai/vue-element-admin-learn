@@ -12,6 +12,10 @@
       <!-- 监听键盘 Enter 按下的时候触发 -->
       <input type="text" class="new-todo" autocomplete="off" placeholder="Todo List" @keyup.enter="addTodo">
     </header>
+    <!-- main section -->
+    <ul class="todo-list">
+      <to-do v-for="(val, index) in todos" :key="index" :todo="val" @deleteTodo="deleteTodo"/>
+    </ul>
     <!-- footer -->
     <footer v-show="todos.length" class="footer">
       <span class="todo-count">
@@ -23,7 +27,7 @@
         <li v-for="(val, key) in filters" :key="key">
           <!-- todo a 标签的区别 -->
           <!-- 作为一个 a 标签 使用点击事件的 click 时 是否应该阻止默认事件 -->
-          <a :class="{selected: visibility === key}" @click.prevent="visibility = key">{{ key | capitalize(key) }}</a>
+          <a :class="{selected: visibility === key}" @click.prevent="visibility = key">{{ key | capitalize }}</a>
         </li>
       </ul>
       <!-- <button class="clear-completed" v-show="todos.length > remaining" @click="clearCompleted">
@@ -51,14 +55,18 @@ const filters = {
   active: todos => todos.filter(todo => !todo.done),
   completed: todos => todos.filter(todo => todo.done)
 }
+
+import ToDo from './ToDo'
 export default {
   // Failed to resolve filter 是哪个地方有问题？
 
   filters: {
     // 一个首字母大写的过滤器
     //  使用这个方法会报错 str.toUpperCase is not a function
-    capitalize: (n,str) => str.charAt(0).toUpperCase() + str.slice(1)
+    // 过滤器可以在 花括号 和 v-bind 表达式使用 总是接收表达式的值为第一个参数 后面接收到参数依次顺延
+    capitalize: (n,str) => (typeof n) === 'string' ? n.charAt(0).toUpperCase() + n.slice(1) : str.charAt(0).toUpperCase() + str.slice(1)
   },
+  components: { ToDo },
   data() {
     return {
       // todos: JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || defalutList
@@ -86,6 +94,10 @@ export default {
         })
       }
       e.target.value = ''
+    },
+    deleteTodo(val) {
+      // 怎么样删除一个元素
+      this.todos.splice(this.todos.indexOf(val),1)
     }
   }
 }
