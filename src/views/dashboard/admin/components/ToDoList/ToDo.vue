@@ -3,15 +3,35 @@
   <li :class="{ completed: todo.done, editing: editing}" class="todo">
     <div class="view">
       <input :checked="todo.done" type="checkbox" class="toggle" @change="toggleTodo(todo)">
-      <label>{{todo.text}}</label>
+      <!-- 双击编辑 socool -->
+      <label @dblclick="editing = true">{{todo.text}}</label>
       <!-- .todoapp .todo-list li:hover .destroy {display:block;} -->
       <button class="destroy" @click="deleteTodo( todo )" />
     </div>
+    <!-- 通过 editing 进行属性切换 -->
+    <!-- 通过 keyup.esc 监听到 esc 取消焦点 -->
+    <!-- 失去焦点之后 blur -->
+    <input v-show="editing"
+      v-focus = "editing"
+      :value="todo.text" type="text"
+      @keyup.enter="doneEdit"
+      @keyup.esc="cancelEdit"
+      @blur="doneEdit">
   </li>
 </template>
 <script>
 export default {
   name: 'ToDo',
+  directives: {
+    // 自定义指令 focus 在下次数据更新之后默认 focus
+    focus(el, { value }, { context }){
+      if (value) {
+        context.$nextTick(()=>{
+          el.focus()
+        })
+      }
+    }
+  },
   props: {
     // 传入一个对象
     // 设置默认值的时候记得返回一个空对象 ToDo why？
@@ -48,7 +68,30 @@ export default {
       // 额外的，每次父级组件发生更新时，子组件中所有的 prop 都将会刷新为最新的值。这意味着你不应该在一个子组件内部改变 prop。如果你这样做了，Vue 会在浏览器的控制台中发出警告
       // 注意在 JavaScript 中对象和数组是通过引用传入的，所以对于一个数组或对象类型的 prop 来说，在子组件中改变这个对象或数组本身将会影响到父组件的状态
       // todo.done = !todo.done
-    }
+    },
+    doneEdit(e) {
+      const value = e.target.value.trim()
+      const { todo } = this
+      if (!value) {
+        this.deleteTodo({
+          todo
+        })
+      } else if (this.editing) {
+        this.editTodo({
+          todo,
+          value
+        })
+        this.editing = false
+      }
+    },
+    cancelEdit(e) {
+      // cancle 恢复数据
+      e.target.value = this.todo.text
+      this.editing = false
+    },
+    editTodo({ todo, value }) {
+      this.$emit('editTodo', { todo, value })
+    },
   }
 }
 </script>
