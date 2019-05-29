@@ -14,7 +14,9 @@
     </header>
     <!-- main section -->
     <ul class="todo-list">
-      <to-do v-for="(val, index) in todos" :key="index" :todo="val" @deleteTodo="deleteTodo"/>
+      <to-do v-for="(val, index) in todos" :key="index" :todo="val" 
+        @deleteTodo="deleteTodo"
+        @toggleTodo="toggleTodo"/>
     </ul>
     <!-- footer -->
     <footer v-show="todos.length" class="footer">
@@ -98,6 +100,10 @@ export default {
     deleteTodo(val) {
       // 怎么样删除一个元素
       this.todos.splice(this.todos.indexOf(val),1)
+    },
+    toggleTodo(todo) {
+      // 怎么修改一个元素
+      todo.done = !todo.done
     }
   }
 }
