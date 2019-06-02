@@ -14,7 +14,7 @@
     </header>
     <!-- main section -->
     <ul class="todo-list">
-      <to-do v-for="(val, index) in todos" :key="index" :todo="val" 
+      <to-do v-for="(val, index) in filters[visibility](todos)" :key="index" :todo="val" 
         @deleteTodo="deleteTodo"
         @toggleTodo="toggleTodo"/>
     </ul>
