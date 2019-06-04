@@ -10,11 +10,12 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 
+//  vue router 全局守卫
 router.beforeEach(async(to, from, next) => {
-  // start progress bar
+  // start progress bar 进度条
   NProgress.start()
 
-  // set page title
+  // set page title 修改当前文档的名称
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
