@@ -1,16 +1,17 @@
 <template>
   <div>
-    <el-table :data="data" style="100%">
+    <el-table :data="data" v-loading="loading" fit highlight-current-row style="width: 100%">
       <el-table-column
         prop="hash"
         label="交易hash">
         <template slot-scope="{row}">
-          <span class="cell-text-ellipsis">{{ row.hash }}</span>
+          <a :href="`https://etherscan.io/tx/${row.hash}`" class="link cell-text-ellipsis">{{ row.hash }}</a>
         </template>
         </el-table-column>
       <el-table-column
         prop="timeStamp"
-        label="时间">
+        label="时间"
+        width="150">
         <template slot-scope="{row}">
           <span>{{ row.timeStamp | formatTime }}</span>
         </template>
@@ -19,21 +20,22 @@
         prop="from"
         label="发送方">
         <template slot-scope="{row}">
-          <span class="cell-text-ellipsis">{{ row.from}}</span>
+          <a :href="`https://etherscan.io/token/${ row.from }`" class="link cell-text-ellipsis">{{ row.from}}</a>
         </template>
         </el-table-column>
       <el-table-column
         prop="to"
         label="接收方">
         <template slot-scope="{row}">
-          <span class="cell-text-ellipsis">{{ row.to}}</span>
+          <a :href="`https://etherscan.io/token/${ row.to }`" class="link cell-text-ellipsis">{{ row.to}}</a>
         </template>
         </el-table-column>
       <el-table-column
         prop="value"
-        label="数量">
+        label="数量"
+        width="150">
         <template slot-scope="{row}">
-          <span>{{ row.value | tokenValue(row.tokenDecimal)}}</span>
+          <span>{{ row.value | tokenValue(row.tokenDecimal) | money}}</span>
         </template>
         </el-table-column>
     </el-table>
@@ -54,8 +56,16 @@ const columns = [
 ]
 export default {
   filters: {
-    tokenValue(value,tokenDecimal){
-      return value / Math.pow(10, tokenDecimal)
+    tokenValue(value, tokenDecimal){
+      return Number.parseFloat(Number.parseFloat(value / Math.pow(10, tokenDecimal)).toFixed(5))
+    },
+    money(value){
+      const arr = value.toString().split('.')
+      let last = '';
+      if(arr.length > 1){
+        last ='.' + arr[1];
+      }
+      return arr[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + last
     }
   },
   components: {
@@ -72,7 +82,9 @@ export default {
   },
   beforeMount () {
     this.page = 1
+    this.loading = true
     this.fetchData((res) => {
+      this.loading = false
       if (res.status == '1'){
         this.data = this.data.concat(res.result)
       }else{
@@ -90,7 +102,6 @@ export default {
         contentType: 'text/html',
         crossOrigin: true,
         success: (res) => {
-          console.log(res)
           callback(res)
         },
       })
@@ -100,11 +111,6 @@ export default {
       this.fetchData((res) => {
         this.loading = false
         if (res.status == '1'){
-          if (res.result.length == 0){
-            this.busy = true
-          }else{
-            this.busy = false
-          }
           this.data = res.result
         }else{
           this.$message.error(res.message)
@@ -130,8 +136,19 @@ export default {
   text-align: center;
 }
 .cell-text-ellipsis{
+  display: block;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+.link, .link a, .link a:visited {
+    color: #37acf6;
+    cursor: pointer;
+    text-decoration: none;
+}
+@media (max-width: 960px) {
+  .cell-text-ellipsis{
+    max-width: 100px;
+  }
 }
 </style>
