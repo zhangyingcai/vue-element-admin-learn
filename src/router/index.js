@@ -16,6 +16,11 @@ const constantRoutes = [
   {
     path: '*',
     redirect: '/404'
+  },
+  {
+    path: '/accountinfo/:address',
+    component: () => import('@/views/token/accountinfo'),
+    props: true
   }
 ]
 

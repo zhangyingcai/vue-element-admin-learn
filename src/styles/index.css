@@ -2,3 +2,8 @@
 .text-center{ text-align: center; }
 .text-right{ text-align: right }
 .pd-1{padding: 1rem;}
+.pb-1{padding-bottom: 1.5rem;}
+.head-link{text-decoration: none; color: #333}
+.black{
+  color: #666;
+}

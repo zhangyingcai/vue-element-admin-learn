@@ -47,13 +47,7 @@ import reqwest from 'reqwest'
 import config from '@/config/index'
 import Pagination from '@/components/Pagination'
 
-//  table 头部
-const columns = [
-  {
-    title: '交易哈希',
-    dataIndex: 'txhash'
-  }
-]
+
 export default {
   filters: {
     tokenValue(value, tokenDecimal){
@@ -62,10 +56,16 @@ export default {
     money(value){
       const arr = value.toString().split('.')
       let last = ''
-      if(arr.length > 1){
-        last ='.' + arr[1]
+      if (arr.length > 1) {
+        last = '.' + arr[1]
       }
       return arr[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + last
+    }
+  },
+  props: {
+    address: {
+      type: String,
+      default: ''
     }
   },
   components: {
@@ -87,23 +87,30 @@ export default {
       this.loading = false
       if (res.status == '1'){
         this.data = this.data.concat(res.result)
+        const value = res.balance
+        const tag = res.tag
+        this.$emit('updateTotal', value, tag)
       }else{
         this.$message.error(res.message)
       }
     })
   },
+  watch: {
+    address: function() {
+      this.handleInfiniteOnLoad()
+    }
+  },
   methods: {
     fetchData (callback) {
       reqwest({
         // url: 'https://explorer-web.api.btc.com/v1/eth/tokentxns/0xfdeaa4ab9fea519afd74df2257a21e5bca0dfd3f?page=1&size=10',
-        url:  `${config.tokentxuri}&apikey=${config.apikey}&contractaddress=${config.contractaddress}&sort=${config.sort}&page=${this.page}&offset=${this.limit}`,
-        // type: 'json',
+        url:  `${config.acountinfourl}?address=${this.address}&page=${this.page}&offset=${this.limit}`,
+        type: 'json',
         method: 'get',
-        contentType: 'text/html',
-        crossOrigin: true,
-        success: (res) => {
-          callback(res)
-        },
+        // contentType: 'text/html',
+        crossOrigin: true
+      }).then(callback).catch((err) => {
+        this.loading = false
       })
     },
     handleInfiniteOnLoad  () {
@@ -112,6 +119,9 @@ export default {
         this.loading = false
         if (res.status == '1'){
           this.data = res.result
+          const value = res.balance
+          const tag = res.tag
+          this.$emit('updateTotal', value, tag)
         }else{
           this.$message.error(res.message)
         }
