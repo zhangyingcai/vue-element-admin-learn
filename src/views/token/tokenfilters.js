@@ -6,6 +6,9 @@
  */
 
 export function tokenValue(value, tokenDecimal){
+  if(!value){
+    return 0
+  }
   return Number.parseFloat(Number.parseFloat(value / Math.pow(10, tokenDecimal)).toFixed(5))
 }
 
