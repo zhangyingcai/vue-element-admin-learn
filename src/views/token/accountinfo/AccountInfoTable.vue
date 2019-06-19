@@ -3,9 +3,9 @@
     <el-table :data="data" v-loading="loading" fit highlight-current-row style="width: 100%">
       <el-table-column
         prop="hash"
-        label="交易hash">
+        label="哈希">
         <template slot-scope="{row}">
-          <a :href="`https://etherscan.io/tx/${row.hash}`" class="link cell-text-ellipsis">{{ row.hash }}</a>
+          <router-link class="link cell-text-ellipsis" :to="`/txinfo/${row.hash}`">{{row.hash}}</router-link>
         </template>
         </el-table-column>
       <el-table-column
@@ -20,14 +20,14 @@
         prop="from"
         label="发送方">
         <template slot-scope="{row}">
-          <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${row.from}`">{{ row.from}}</router-link>
+          <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${row.from}`">{{ row.from | showTag(address,tag) }}</router-link>
         </template>
         </el-table-column>
       <el-table-column
         prop="to"
         label="接收方">
         <template slot-scope="{row}">
-          <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${row.to}`">{{ row.to}}</router-link>
+          <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${row.to}`">{{ row.to | showTag(address,tag) }}</router-link>
         </template>
         </el-table-column>
       <el-table-column
@@ -46,6 +46,7 @@
 import reqwest from 'reqwest'
 import config from '@/config/index'
 import Pagination from '@/components/Pagination'
+import { showTag } from '../tokenfilters'
 
 
 export default {
@@ -60,12 +61,17 @@ export default {
         last = '.' + arr[1]
       }
       return arr[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + last
-    }
+    },
+    showTag
   },
   props: {
     address: {
       type: String,
       default: ''
+    },
+    tag: {
+      type: String,
+      default:''
     }
   },
   components: {
@@ -107,7 +113,6 @@ export default {
         url:  `${config.acountinfourl}?address=${this.address}&page=${this.page}&offset=${this.limit}`,
         type: 'json',
         method: 'get',
-        // contentType: 'text/html',
         crossOrigin: true
       }).then(callback).catch((err) => {
         this.loading = false

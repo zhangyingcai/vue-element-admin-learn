@@ -3,9 +3,9 @@
     <el-table :data="data" v-loading="loading" fit highlight-current-row style="width: 100%">
       <el-table-column
         prop="hash"
-        label="交易hash">
+        label="哈希">
         <template slot-scope="{row}">
-          <a :href="`https://etherscan.io/tx/${row.hash}`" class="link cell-text-ellipsis">{{ row.hash }}</a>
+          <router-link class="link cell-text-ellipsis" :to="`/txinfo/${row.hash}`">{{row.hash}}</router-link>
         </template>
         </el-table-column>
       <el-table-column
@@ -77,7 +77,7 @@ export default {
       loading: false,
       busy: false,
       page: 1,
-      limit: config.offset
+      limit: 10
     }
   },
   beforeMount () {
@@ -141,11 +141,7 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.link, .link a, .link a:visited {
-    color: #37acf6;
-    cursor: pointer;
-    text-decoration: none;
-}
+
 @media (max-width: 960px) {
   .cell-text-ellipsis{
     max-width: 100px;

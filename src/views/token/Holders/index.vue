@@ -12,8 +12,9 @@
       <el-table-column prop="address" label="地址">
         <template slot-scope="{row}">
           <router-link class="link" :to="`/accountinfo/${row.address}`">
-            <div class="cell-text-ellipsis">{{ row.address }}
-              <span class="black" v-if="row.tag">({{ row.tag }})</span>
+            <div class="cell-text-ellipsis">
+              <span v-if="!row.tag">{{ row.address }}</span>
+              <span v-if="row.tag">{{ row.tag }}</span>
             </div>
           </router-link>
         </template>
@@ -61,7 +62,7 @@ export default {
       loading: false,
       busy: false,
       page: 1,
-      limit: config.offset,
+      limit: 10,
       total: 0,
       appeth: config.appeth
     }
@@ -123,22 +124,5 @@ export default {
   width: 100%;
   text-align: center;
 }
-.cell-text-ellipsis {
-  display: block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.link,
-.link a,
-.link a:visited {
-  color: #37acf6;
-  cursor: pointer;
-  text-decoration: none;
-}
-@media (max-width: 960px) {
-  .cell-text-ellipsis {
-    max-width: 100px;
-  }
-}
+
 </style>

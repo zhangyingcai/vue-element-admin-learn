@@ -12,85 +12,133 @@
         </router-link>
       </div>
     </el-header>
-    <div class="page-container">
-      <el-tabs v-model="activeName" class="mytabs">
-        <el-tab-pane label="地址信息" name="txinfo">
-          <el-card class="text-left mycard mb-1">
-            <div slot="header">
-              <span class="all">持有BCAT</span>
-              <br>
-              <div class="all pt-1">{{total | tokenValue(tokenDecimal) | money}}</div>
-            </div>
-            <div class="pb-1">
-              <span class="all">当前地址</span>
-              <br>
-              <div class="address cell-text-ellipsis">
-                <span class="link">{{address}}</span>
-              </div>
-            </div>
-            <div class="pb-1">
-              <span class="all">地址信息</span>
-              <br>
-              <div class="address">
-                <span class="black" v-if="tag">{{ tag }}</span>
-              </div>
-            </div>
-          </el-card>
-        </el-tab-pane>
-        <el-tab-pane label="流动信息" name="transfers">
-          <AccountInfoTable :address="address" :tag="tag" @updateTotal="updateTotal"/>
-        </el-tab-pane>
-      </el-tabs>
+    <div v-loading="loading" class="page-container">
+      <el-card class="text-left mycard">
+        <div slot="header">
+          <span class="all">交易hash</span>
+          <br>
+          <div class="pt-1 link cell-text-ellipsis">{{hash}}</div>
+        </div>
+        <el-row :gutter="20">
+          <el-col :span="8">所在区块:</el-col>
+          <el-col :span="16">{{hashinfo.blockNumber}}({{hashinfo.confirmations}}个确认数)</el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">时间:</el-col>
+          <el-col :span="16">{{hashinfo.timeStamp | formatTime }}</el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">发送方:</el-col>
+          <el-col :span="16">
+            <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${hashinfo.from}`">{{hashinfo.from}}</router-link>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">接收方:</el-col>
+          <el-col :span="16">
+            <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${hashinfo.to}`">{{hashinfo.to}}</router-link>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">数量:</el-col>
+          <el-col :span="16">{{hashinfo.value | tokenValue(hashinfo.tokenDecimal) | tokenMoney}} BCAT</el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">手续费:</el-col>
+          <el-col :span="16">{{ (hashinfo.gasPrice*hashinfo.gasUsed) | tokenValue(18)}} ETH</el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">Gas 限额:</el-col>
+          <el-col :span="16">{{hashinfo.gas}}</el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">Gas 消耗:</el-col>
+          <el-col :span="16">{{hashinfo.gasUsed}}</el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">Gas 价格:</el-col>
+          <el-col :span="16">{{hashinfo.gasPrice | tokenValue(9)}} Gwei</el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">Nonce;{Position}:</el-col>
+          <el-col :span="16">{{hashinfo.nonce}}({{hashinfo.transactionIndex}})</el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">输入数据:</el-col>
+          <el-col :span="16" class="textwrap">{{hashinfo.input}}</el-col>
+        </el-row>
+      </el-card>
     </div>
   </div>
 </template>
 <script>
-import AccountInfoTable from './AccountInfoTable'
 import reqwest from 'reqwest'
 import config from '@/config/index'
+import { tokenValue, tokenMoney } from '../tokenfilters'
 export default {
-  components: {
-    AccountInfoTable
-  },
+  name: 'token',
   filters: {
-    tokenValue(value, tokenDecimal) {
-      return Number.parseFloat(
-        Number.parseFloat(value / Math.pow(10, tokenDecimal)).toFixed(5)
-      )
-    },
-    money(value) {
-      const arr = value.toString().split('.')
-      let last = ''
-      if (arr.length > 1) {
-        last = '.' + arr[1]
-      }
-      return arr[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + last
-    }
+    tokenValue,
+    tokenMoney
+  },
+  components: {
   },
   props: {
-    address: {
+    hash: {
       type: String,
       default: ''
     }
   },
   data() {
     return {
-      activeName: 'txinfo',
-      total: 0.0,
-      contractaddress: config.contractaddress,
-      tokenDecimal: 18,
-      tag: ''
+      loading: false,
+      hashinfo: {
+        blockNumber: '',
+        from: '',
+        to: '',
+        timeStamp: '',
+        tokenDecimal: '',
+        value: '',
+        cumulativeGasUsed: '',
+        gas: '',
+        gasUsed: '',
+        gasPrice: '',
+        nonce: '',
+        transactionIndex: '',
+        input: ''
+      }
     }
   },
+  beforeMount() {
+    this.getData()
+  },
   methods: {
-    updateTotal(value, tag) {
-      this.total = value
-      this.tag = tag
+    getData() {
+      this.loading = true
+      const url = `${config.txinfourl}?hash=${this.hash}`
+      reqwest({
+        url: url,
+        type: 'json',
+        method: 'get',
+        crossOrigin: true
+      })
+        .then((res) => {
+          this.loading = false
+          if (res.status == '1') {
+            console.log(res.result)
+            Object.assign(this.hashinfo, res.result)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
+        .always(() => {
+          this.loading = false
+        })
     }
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .mycard {
   height: 100%;
   padding: 5px;
@@ -161,5 +209,14 @@ export default {
   display: inline-block;
   width: 25px;
   vertical-align: middle;
+}
+.el-row {
+  margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.textwrap{
+  word-wrap: break-word;
 }
 </style>
