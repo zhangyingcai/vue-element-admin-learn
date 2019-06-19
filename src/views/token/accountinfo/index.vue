@@ -22,14 +22,14 @@
               <div class="all pt-1">{{total | tokenValue(tokenDecimal) | tokenMoney}}</div>
             </div>
             <div class="pb-1">
-              <span class="all">当前地址</span>
+              <span class="">当前地址</span>
               <br>
               <div class="address cell-text-ellipsis">
                 <span class="link">{{address}}</span>
               </div>
             </div>
             <div class="pb-1">
-              <span class="all">地址信息</span>
+              <span class="">地址信息</span>
               <br>
               <div class="address">
                 <span class="black" v-if="tag">{{ tag }}</span>
@@ -66,9 +66,9 @@ export default {
   data() {
     return {
       activeName: 'txinfo',
-      total: 0.0,
+      total: 0,
       contractaddress: config.contractaddress,
-      tokenDecimal: 18,
+      tokenDecimal: config.tokenDecimal,
       tag: ''
     }
   },
