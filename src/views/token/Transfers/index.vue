@@ -35,7 +35,7 @@
         label="数量"
         width="150">
         <template slot-scope="{row}">
-          <span>{{ row.value | tokenValue(row.tokenDecimal) | money}}</span>
+          <span>{{ row.value | tokenValue(row.tokenDecimal) | tokenMoney}}</span>
         </template>
         </el-table-column>
     </el-table>
@@ -46,6 +46,7 @@
 import reqwest from 'reqwest'
 import config from '@/config/index'
 import Pagination from '@/components/Pagination'
+import { tokenValue, tokenMoney } from '../tokenfilters'
 
 //  table 头部
 const columns = [
@@ -56,17 +57,8 @@ const columns = [
 ]
 export default {
   filters: {
-    tokenValue(value, tokenDecimal){
-      return Number.parseFloat(Number.parseFloat(value / Math.pow(10, tokenDecimal)).toFixed(5))
-    },
-    money(value){
-      const arr = value.toString().split('.')
-      let last = ''
-      if(arr.length > 1){
-        last ='.' + arr[1]
-      }
-      return arr[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + last
-    }
+    tokenValue,
+    tokenMoney
   },
   components: {
     Pagination

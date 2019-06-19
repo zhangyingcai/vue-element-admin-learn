@@ -19,7 +19,7 @@
             <div slot="header">
               <span class="all">持有BCAT</span>
               <br>
-              <div class="all pt-1">{{total | tokenValue(tokenDecimal) | money}}</div>
+              <div class="all pt-1">{{total | tokenValue(tokenDecimal) | tokenMoney}}</div>
             </div>
             <div class="pb-1">
               <span class="all">当前地址</span>
@@ -48,24 +48,14 @@
 import AccountInfoTable from './AccountInfoTable'
 import reqwest from 'reqwest'
 import config from '@/config/index'
+import { tokenValue, tokenMoney } from '../tokenfilters'
 export default {
   components: {
     AccountInfoTable
   },
   filters: {
-    tokenValue(value, tokenDecimal) {
-      return Number.parseFloat(
-        Number.parseFloat(value / Math.pow(10, tokenDecimal)).toFixed(5)
-      )
-    },
-    money(value) {
-      const arr = value.toString().split('.')
-      let last = ''
-      if (arr.length > 1) {
-        last = '.' + arr[1]
-      }
-      return arr[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + last
-    }
+    tokenValue,
+    tokenMoney
   },
   props: {
     address: {
