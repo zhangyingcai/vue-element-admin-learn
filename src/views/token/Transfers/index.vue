@@ -48,13 +48,6 @@ import config from '@/config/index'
 import Pagination from '@/components/Pagination'
 import { tokenValue, tokenMoney } from '../tokenfilters'
 
-//  table 头部
-const columns = [
-  {
-    title: '交易哈希',
-    dataIndex: 'txhash'
-  }
-]
 export default {
   filters: {
     tokenValue,
@@ -75,14 +68,7 @@ export default {
   beforeMount () {
     this.page = 1
     this.loading = true
-    this.fetchData((res) => {
-      this.loading = false
-      if (res.status == '1'){
-        this.data = this.data.concat(res.result)
-      }else{
-        this.$message.error(res.message)
-      }
-    })
+    this.getTransactions()
   },
   methods: {
     fetchData (callback) {
@@ -98,16 +84,24 @@ export default {
         },
       })
     },
-    handleInfiniteOnLoad  () {
-      this.loading = true
-      this.fetchData((res) => {
+    getTransactions() { // 获取官方地址数量
+      reqwest({
+        url:  `${config.transactionsurl}?page=${this.page}&limit=${this.limit}`,
+        type: 'json',
+        method: 'get',
+        crossOrigin: true
+      }).then((res)=>{
         this.loading = false
         if (res.status == '1'){
           this.data = res.result
-        }else{
-          this.$message.error(res.message)
         }
+      }).catch((err) => {
+        this.loading = false
       })
+    },
+    handleInfiniteOnLoad  () {
+      this.loading = true
+      this.getTransactions()
     },
   },
 }
