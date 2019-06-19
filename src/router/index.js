@@ -21,6 +21,11 @@ const constantRoutes = [
     path: '/accountinfo/:address',
     component: () => import('@/views/token/accountinfo'),
     props: true
+  },
+  {
+    path: '/txinfo/:hash',
+    component: () => import('@/views/token/txinfo'),
+    props: true
   }
 ]
 
