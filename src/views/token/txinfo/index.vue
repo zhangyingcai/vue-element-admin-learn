@@ -19,54 +19,64 @@
           <br>
           <div class="pt-1 link cell-text-ellipsis">{{hash}}</div>
         </div>
-        <el-row :gutter="20">
-          <el-col :span="8">所在区块:</el-col>
-          <el-col :span="16">{{hashinfo.blockNumber}}({{hashinfo.confirmations}}个确认数)</el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">时间:</el-col>
-          <el-col :span="16">{{hashinfo.timeStamp | formatTime }}</el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">发送方:</el-col>
-          <el-col :span="16">
-            <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${hashinfo.from}`">{{hashinfo.from}}</router-link>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">接收方:</el-col>
-          <el-col :span="16">
-            <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${hashinfo.to}`">{{hashinfo.to}}</router-link>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">数量:</el-col>
-          <el-col :span="16">{{hashinfo.value | tokenValue(hashinfo.tokenDecimal) | tokenMoney}} BCAT</el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">手续费:</el-col>
-          <el-col :span="16">{{ (hashinfo.gasPrice*hashinfo.gasUsed) | tokenValue(18)}} ETH</el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">Gas 限额:</el-col>
-          <el-col :span="16">{{hashinfo.gas}}</el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">Gas 消耗:</el-col>
-          <el-col :span="16">{{hashinfo.gasUsed}}</el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">Gas 价格:</el-col>
-          <el-col :span="16">{{hashinfo.gasPrice | tokenValue(9)}} Gwei</el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">Nonce;{Position}:</el-col>
-          <el-col :span="16">{{hashinfo.nonce}}({{hashinfo.transactionIndex}})</el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">输入数据:</el-col>
-          <el-col :span="16" class="textwrap">{{hashinfo.input}}</el-col>
-        </el-row>
+        <div v-if="nodata">
+          <el-row :gutter="20">
+            <el-col :span="8">所在区块:</el-col>
+            <el-col :span="16">{{hashinfo.blockNumber}}({{hashinfo.confirmations}}个确认数)</el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">时间:</el-col>
+            <el-col :span="16">{{hashinfo.timeStamp | formatTime }}</el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">发送方:</el-col>
+            <el-col :span="16">
+              <router-link
+                class="link cell-text-ellipsis"
+                :to="`/accountinfo/${hashinfo.from}`"
+              >{{hashinfo.from}}</router-link>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">接收方:</el-col>
+            <el-col :span="16">
+              <router-link
+                class="link cell-text-ellipsis"
+                :to="`/accountinfo/${hashinfo.to}`"
+              >{{hashinfo.to}}</router-link>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">数量:</el-col>
+            <el-col
+              :span="16"
+            >{{hashinfo.value | tokenValue(hashinfo.tokenDecimal) | tokenMoney}} BCAT</el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">手续费:</el-col>
+            <el-col :span="16">{{ (hashinfo.gasPrice*hashinfo.gasUsed) | tokenValue(18)}} ETH</el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">Gas 限额:</el-col>
+            <el-col :span="16">{{hashinfo.gas}}</el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">Gas 消耗:</el-col>
+            <el-col :span="16">{{hashinfo.gasUsed}}</el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">Gas 价格:</el-col>
+            <el-col :span="16">{{hashinfo.gasPrice | tokenValue(9)}} Gwei</el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">Nonce;{Position}:</el-col>
+            <el-col :span="16">{{hashinfo.nonce}}({{hashinfo.transactionIndex}})</el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">输入数据:</el-col>
+            <el-col :span="16" class="textwrap">{{hashinfo.input}}</el-col>
+          </el-row>
+        </div>
       </el-card>
     </div>
   </div>
@@ -75,14 +85,14 @@
 import reqwest from 'reqwest'
 import config from '@/config/index'
 import { tokenValue, tokenMoney } from '../tokenfilters'
+import { truncate } from 'fs';
 export default {
   name: 'token',
   filters: {
     tokenValue,
     tokenMoney
   },
-  components: {
-  },
+  components: {},
   props: {
     hash: {
       type: String,
@@ -92,6 +102,7 @@ export default {
   data() {
     return {
       loading: false,
+      nodata: false,
       hashinfo: {
         blockNumber: '',
         from: '',
@@ -122,11 +133,11 @@ export default {
         method: 'get',
         crossOrigin: true
       })
-        .then((res) => {
+        .then(res => {
           this.loading = false
           if (res.status == '1') {
-            console.log(res.result)
             Object.assign(this.hashinfo, res.result)
+            this.nodata = true
           } else {
             this.$message.error(res.message)
           }
@@ -216,7 +227,7 @@ export default {
     margin-bottom: 0;
   }
 }
-.textwrap{
+.textwrap {
   word-wrap: break-word;
 }
 </style>
