@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import VueRouter  from 'vue-router'
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
+
+NProgress.configure({ showSpinner: false })
 
 Vue.use(VueRouter)
 
@@ -44,5 +48,13 @@ const createRouter = () => new VueRouter({
 })
 
 const router = createRouter()
+router.beforeEach(async(to, from, next)=>{
+  NProgress.start()
+  next()
+})
+router.afterEach(async(to, from, next)=>{
+  NProgress.done()
+  next()
+})
 
 export default router
