@@ -8,6 +8,7 @@
 .black{
   color: #666;
 }
+.font-weght{ font-weight: 600;}
 .link,
 .link a,
 .link a:visited {
@@ -22,7 +23,7 @@
   text-overflow: ellipsis;
 }
 @media (max-width: 960px) {
-  .cell-text-ellipsis {
-    max-width: 100px;
+  .max-width{
+    max-width: 40px;
   }
 }
