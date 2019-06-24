@@ -52,9 +52,8 @@ router.beforeEach(async(to, from, next)=>{
   NProgress.start()
   next()
 })
-router.afterEach(async(to, from, next)=>{
+router.afterEach(async()=>{
   NProgress.done()
-  next()
 })
 
 export default router
