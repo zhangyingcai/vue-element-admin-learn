@@ -20,14 +20,14 @@
         prop="from"
         label="发送方">
         <template slot-scope="{row}">
-          <router-link class="link cell-text-ellipsis max-width" :to="`/accountinfo/${row.from}`">{{ row.from}}</router-link>
+          <router-link class="link cell-text-ellipsis" :class="{'max-width': !row.fromtag }" :to="`/accountinfo/${row.from}`">{{ row.fromtag ? row.fromtag : row.from }}</router-link>
         </template>
         </el-table-column>
       <el-table-column
         prop="to"
         label="接收方">
         <template slot-scope="{row}">
-          <router-link class="link cell-text-ellipsis max-width" :to="`/accountinfo/${row.to}`">{{ row.to}}</router-link>
+          <router-link class="link cell-text-ellipsis" :class="{'max-width': !row.totag }" :to="`/accountinfo/${row.to}`">{{ row.totag ? row.totag : row.to }}</router-link>
         </template>
         </el-table-column>
       <el-table-column
