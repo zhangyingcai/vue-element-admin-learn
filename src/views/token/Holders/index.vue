@@ -12,7 +12,7 @@
       <el-table-column prop="address" label="地址">
         <template slot-scope="{row}">
           <router-link class="link" :to="`/accountinfo/${row.address}`">
-            <div class="cell-text-ellipsis">
+            <div class="cell-text-ellipsis" :class="{ 'max-width': !row.tag }">
               <span v-if="!row.tag">{{ row.address }}</span>
               <span v-if="row.tag">{{ row.tag }}</span>
             </div>
@@ -30,7 +30,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <Pagination :page.sync="page" :limit.sync="limit" @pagination="handleInfiniteOnLoad"/>
+    <Pagination :layout="layout" :total="total" :page.sync="page" :limit.sync="limit" @pagination="handleInfiniteOnLoad"/>
   </div>
 </template>
 <script>
@@ -53,7 +53,8 @@ export default {
       loading: false,
       busy: false,
       page: 1,
-      limit: 10,
+      limit: 30,
+      layout: 'total, prev, next, jumper',
       total: 0,
       appeth: config.appeth
     }
@@ -100,20 +101,3 @@ export default {
   }
 }
 </script>
-<style>
-.demo-infinite-container {
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-  overflow: auto;
-  padding: 8px 24px;
-  height: calc(100vh - 40px);
-  /* max-height: 800px; */
-}
-.demo-loading-container {
-  position: absolute;
-  bottom: 40px;
-  width: 100%;
-  text-align: center;
-}
-
-</style>

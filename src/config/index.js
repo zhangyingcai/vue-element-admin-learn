@@ -11,11 +11,13 @@ const config = {
   tokenbalance:'https://api.etherscan.io/api?module=stats&action=tokensupply&contractaddress=0xfDEAA4ab9fea519aFD74df2257A21e5BcA0DFd3f&apikey=K7T921SQKMBW35UTUIVI5YU2VJX76IUQSV',
   apiurl: 'http://blockapi.liuyiqian.net:7001/holders', // 排行榜
   acountinfourl: 'http://blockapi.liuyiqian.net:7001/accountinfo', // 单个地址
-  txinfourl: 'http://localhost:7001/txinfo', // 单个地址
+  txinfourl: 'http://blockapi.liuyiqian.net:7001/txinfo', // 单个地址
+  transactionsurl: 'http://blockapi.liuyiqian.net:7001/transactions',
+  tokensupplyurl: 'http://blockapi.liuyiqian.net:7001/tokensupply',
   // apiurl: 'http://localhost:7001/holders'
   appeth: '0x06bb48363eff79604febc5329dd3688690e7fd8f', // 官方地址
   otcbtceth: '0xaeec6f5aca72f3a005af1b3420ab8c8c7009bac8',
-  cleareth: '0x4660378743FA83f0d1F45d60FA9f5c9D1D7C1D49'
+  cleareth: '0x4660378743fa83f0d1f45d60fa9f5c9d1d7c1d49'
 }
 
 export default config

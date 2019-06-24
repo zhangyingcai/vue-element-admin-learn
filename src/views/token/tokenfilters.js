@@ -37,7 +37,7 @@ export function tokenMoney(value){
 
 export function showTag(value, address='', tag=''){
   let result = value;
-  if (value == address){
+  if (value.toLowerCase() == address.toLowerCase()){
     if(tag){
       result = tag;
     }

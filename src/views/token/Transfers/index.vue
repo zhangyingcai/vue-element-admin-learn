@@ -5,29 +5,29 @@
         prop="hash"
         label="哈希">
         <template slot-scope="{row}">
-          <router-link class="link cell-text-ellipsis" :to="`/txinfo/${row.hash}`">{{row.hash}}</router-link>
+          <router-link class="link cell-text-ellipsis max-width" :to="`/txinfo/${row.hash}`">{{row.hash}}</router-link>
         </template>
         </el-table-column>
       <el-table-column
         prop="timeStamp"
         label="时间"
-        width="150">
+        width="200">
         <template slot-scope="{row}">
-          <span>{{ row.timeStamp | formatTime }}</span>
+          <span>{{ row.timeStamp | formatTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
         </el-table-column>
       <el-table-column
         prop="from"
         label="发送方">
         <template slot-scope="{row}">
-          <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${row.from}`">{{ row.from}}</router-link>
+          <router-link class="link cell-text-ellipsis max-width" :to="`/accountinfo/${row.from}`">{{ row.from}}</router-link>
         </template>
         </el-table-column>
       <el-table-column
         prop="to"
         label="接收方">
         <template slot-scope="{row}">
-          <router-link class="link cell-text-ellipsis" :to="`/accountinfo/${row.to}`">{{ row.to}}</router-link>
+          <router-link class="link cell-text-ellipsis max-width" :to="`/accountinfo/${row.to}`">{{ row.to}}</router-link>
         </template>
         </el-table-column>
       <el-table-column
@@ -39,7 +39,7 @@
         </template>
         </el-table-column>
     </el-table>
-    <Pagination :page.sync="page" :limit.sync="limit" @pagination="handleInfiniteOnLoad" />
+    <Pagination :layout="layout" :total="total" :page.sync="page" :limit.sync="limit" @pagination="handleInfiniteOnLoad" />
   </div>
 </template>
 <script>
@@ -62,7 +62,9 @@ export default {
       loading: false,
       busy: false,
       page: 1,
-      limit: 10
+      limit: 30,
+      layout: 'total, prev, next, jumper',
+      total: 0
     }
   },
   beforeMount () {
@@ -94,6 +96,7 @@ export default {
         this.loading = false
         if (res.status == '1'){
           this.data = res.result
+          this.total = res.total
         }
       }).catch((err) => {
         this.loading = false
@@ -106,31 +109,3 @@ export default {
   },
 }
 </script>
-<style>
-.demo-infinite-container {
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-  overflow: auto;
-  padding: 8px 24px;
-  height: calc(100vh - 40px);
-  /* max-height: 800px; */
-}
-.demo-loading-container {
-  position: absolute;
-  bottom: 40px;
-  width: 100%;
-  text-align: center;
-}
-.cell-text-ellipsis{
-  display: block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-@media (max-width: 960px) {
-  .cell-text-ellipsis{
-    max-width: 100px;
-  }
-}
-</style>
