@@ -5,13 +5,13 @@
         prop="hash"
         label="哈希">
         <template slot-scope="{row}">
-          <router-link class="link cell-text-ellipsis max-width" :to="`/txinfo/${row.hash}`">{{row.hash}}</router-link>
+          <router-link class="link cell-text-ellipsis max-width" :to="`/txinfo?hash=${row.hash}`">{{row.hash}}</router-link>
         </template>
         </el-table-column>
       <el-table-column
         prop="timeStamp"
         label="时间"
-        width="200">
+        width="150px">
         <template slot-scope="{row}">
           <span>{{ row.timeStamp | formatTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
@@ -39,7 +39,7 @@
         </template>
         </el-table-column>
     </el-table>
-    <Pagination :layout="layout" :total="total" :page.sync="page" :limit.sync="limit" @pagination="handleInfiniteOnLoad" />
+    <Pagination :autoScroll="false" :layout="layout" :total="total" :page.sync="page" :limit.sync="limit" @pagination="handleInfiniteOnLoad" />
   </div>
 </template>
 <script>
@@ -76,7 +76,7 @@ export default {
     fetchData (callback) {
       reqwest({
         // url: 'https://explorer-web.api.btc.com/v1/eth/tokentxns/0xfdeaa4ab9fea519afd74df2257a21e5bca0dfd3f?page=1&size=10',
-        url:  `${config.tokentxuri}&apikey=${config.apikey}&contractaddress=${config.contractaddress}&sort=${config.sort}&page=${this.page}&offset=${this.limit}`,
+        url:  `${config.apiurl}/transactions&apikey=${config.apikey}&contractaddress=${config.contractaddress}&sort=${config.sort}&page=${this.page}&offset=${this.limit}`,
         // type: 'json',
         method: 'get',
         contentType: 'text/html',
@@ -88,7 +88,7 @@ export default {
     },
     getTransactions() { // 获取官方地址数量
       reqwest({
-        url:  `${config.transactionsurl}?page=${this.page}&limit=${this.limit}`,
+        url:  `${config.apiurl}/transactions?page=${this.page}&limit=${this.limit}`,
         type: 'json',
         method: 'get',
         crossOrigin: true

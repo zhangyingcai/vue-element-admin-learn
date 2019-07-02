@@ -27,3 +27,47 @@
     max-width: 40px;
   }
 }
+.all {
+  font-size: 20px;
+  color: #000;
+}
+.pt-1 {
+  padding-top: 15px;
+}
+.mycard {
+  height: 100%;
+  padding: 5px;
+  border-radius: 15px;
+}
+.el-tabs--border-card,
+.el-card.is-always-shadow,
+.el-card.is-hover-shadow:focus,
+.el-card.is-hover-shadow:hover {
+  box-shadow: 0 2px 12px 0 rgba(146, 137, 255, 0.2);
+}
+.mytabs {
+  margin-top: 20px;
+  padding: 0 15px;
+  border-radius: 15px;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 2px 12px 0 rgba(146, 137, 255, 0.2);
+}
+.mycard .address {
+  margin: 15px 0;
+}
+.page-container {
+  width: 1140px;
+  margin: 0 auto;
+  padding: 20px;
+}
+@media (max-width: 1140px) {
+  .header,
+  .page-container {
+    width: auto;
+  }
+}
+.header {
+  background-color: white;
+  border-bottom: 1px solid #ebeef5;
+  padding: 18px 0;
+}

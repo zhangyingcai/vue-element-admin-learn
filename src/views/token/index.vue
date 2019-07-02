@@ -1,133 +1,123 @@
 <template>
   <div>
-    <el-row class="mycardh">
-      <el-col :lg="12" :md="24" class="mycard">
-        <el-card class="text-left mycard">
-          <div slot="header">
-            <span>代币信息</span>
-          </div>
-          <el-row v-for="(item, index) in tokeninfo" :key="index" class="pd-1">
-            <el-col :span="12">{{item.label}}：</el-col>
-            <el-col :span="12">
-              <!--  价格 + eth -->
-              {{item.other?'￥':''}}{{item.value}}
-              <span v-if="item.other">{{item.other.label}}  {{item.other.value}}</span>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col>
-      <el-col :lg="12" :md="24" class="mycard">
-        <el-card class="text-left mycard">
-          <div slot="header">
-            <span>合约信息</span>
-          </div>
-          <el-row v-for="(item, index) in contract" :key="index" class="pd-1">
-            <el-col :span="12">{{item.label}}：</el-col>
-            <el-col :span="12" class="cell-text-ellipsis">
-              <!--  价格 + eth -->
-              {{item.value}}
-              <span v-if="item.other">{{item.other.label}}  {{item.other.value}}</span>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-tabs v-model="activeName" type="border-card">
-      <el-tab-pane label="转账情况" name="transfers">
-        <Transfers/>
-      </el-tab-pane>
-      <el-tab-pane label="持仓情况" name="holders"></el-tab-pane>
-    </el-tabs>
+    <Header/>
+    <div class="page-container">
+      <el-card class="text-left mycard">
+        <div slot="header">
+          <span class="all">理论总量</span>
+          <br>
+          <div class="all pt-1">{{total | tokenMoney}}</div>
+        </div>
+        <div class="pb-1">
+          <span class="font-weght">实际流通量</span>
+          <br>
+          <div class="pt-1">{{total-apptotal | tokenMoney}}</div>
+        </div>
+        <div class="pb-1">
+          <span class="font-weght">已通缩销毁量</span>
+          <br>
+          <div class="pt-1">{{clearTotal | tokenMoney}}</div>
+        </div>
+        <span class="font-weght">合约地址</span>
+        <br>
+        <el-col class="address cell-text-ellipsis">
+          <span class="link">{{address}}</span>
+        </el-col>
+      </el-card>
+      <el-tabs v-model="activeName" class="mytabs">
+        <el-tab-pane label="排行榜" name="holders">
+          <Holders/>
+        </el-tab-pane>
+        <el-tab-pane label="流动信息" name="transfers">
+          <Transfers/>
+        </el-tab-pane>
+        <el-tab-pane label="常用地址" name="address">
+          <Address/>
+        </el-tab-pane>
+        <el-tab-pane label="销毁记录" name="destroy">
+          <Destroy/>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+    <!-- <CommonFooter></CommonFooter> -->
   </div>
 </template>
 <script>
 import Transfers from './Transfers/index'
+import Holders from './Holders/index'
+import Address from './Address/index'
+import reqwest from 'reqwest'
+import config from '@/config/index'
+import Destroy from './Destroy/index'
+import Header from './components/Header'
+// import CommonFooter from './CommonFooter'
+import { tokenValue, tokenMoney } from './tokenfilters'
 export default {
   name: 'token',
+  filters: {
+    tokenValue,
+    tokenMoney
+  },
   components: {
-    Transfers
+    Transfers,
+    Holders,
+    Address,
+    Destroy,
+    Header
   },
   data() {
     return {
-      activeName: 'transfers',
-      tokeninfo: {
-        price: {
-          label: '价格',
-          value: 0,
-          other: {
-            label: '@',
-            value: 0,
-            unit: 'ETH'
-          }
-        },
-        value: {
-          label: '总供应量',
-          value: 0,
-          unit: 'BCAT'
-        },
-        market: {
-          label: 'value',
-          value: 0
-        },
-        holders: {
-          label: '持币地址',
-          value: 0,
-          unit: '个'
-        },
-        transfers: {
-          label: '转账总数',
-          value: 0
-        },
-        tokenDecimal: {
-          label: '小数位',
-          value: 18
-        }
-      },
-      contract: {
-        address: {
-          label: '合约地址',
-          value: '0xfdeaa4ab9fea519afd74df2257a21e5bca0dfd3f'
-        },
-        authAddress: {
-          label: '创建者地址',
-          value: '0x1f759fae44ca006a496434908b009820afea0a90'
-        },
-        balance: {
-          label: '合约账户余额',
-          value: '',
-          other: {
-            label: '￥',
-            value: 0
+      activeName: 'holders',
+      total: 439165535, // 合约地址总量
+      address: config.contractaddress,
+      apptotal: 265562045, // 官方地址总量
+      page: 1,
+      limit: 1,
+      tokenDecimal: config.tokenDecimal
+    }
+  },
+  beforeMount() {
+    this.getTokenSupply()
+    this.getAppSupply()
+  },
+  computed: {
+    clearTotal: function(){
+      return 1000000000 - this.total
+    }
+  },
+  methods: {
+    getTokenSupply() { // 获取token 供给量
+      reqwest({
+        url: config.apiurl+'/tokensupply',
+        type: 'json',
+        method: 'get',
+        crossOrigin: true,
+        success: res => {
+          if (res.status == '1') {
+            this.total = tokenValue(res.result,this.tokenDecimal)
           }
         }
-      }
+      })
+    },
+    getAppSupply() { // 获取官方地址数量
+      reqwest({
+        url:  `${config.apiurl}/accountinfo?address=${config.appeth}&page=${this.page}&offset=${this.limit}`,
+        type: 'json',
+        method: 'get',
+        crossOrigin: true
+      }).then((res)=>{
+        if (res.status == '1'){
+          this.apptotal = tokenValue(res.balance,this.tokenDecimal)
+        }
+      }).catch((err) => {
+        this.loading = false
+      })
     }
   }
 }
 </script>
 <style>
-.mycard{
-  height: 100%;
-  padding: 5px;
-}
-.mycardh{
-  height: 418px;
-  margin-bottom: 15px;
-}
-@media screen and (max-width: 1200px) {
-  .mycardh{
-    height: auto;
-    margin-bottom: 15px;
-  }
-  .page-container{
-    width: auto;
-    margin: 20px auto 0 auto;
-  }
-}
-@media screen and (max-width: 1200px) {
-  .page-container{
-    width: 1200px;
-    margin: 20px auto 0 auto;
-  }
+.el-tabs__nav-next, .el-tabs__nav-prev{
+  color: #37acf6;
 }
 </style>

@@ -27,9 +27,12 @@ const constantRoutes = [
     props: true
   },
   {
-    path: '/txinfo/:hash',
+    path: '/txinfo',
     component: () => import('@/views/token/txinfo'),
-    props: true
+    props: (router) => ({
+      hash: router.query.hash,
+      id: router.query.id
+    })
   }
 ]
 
