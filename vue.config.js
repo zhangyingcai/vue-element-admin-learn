@@ -12,6 +12,22 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 // For example, Mac: sudo npm run
 const port = 9528 // dev port
 
+// cdn
+const cdn = {
+  css: [
+    // element-ui css
+    'https://cdn.bootcss.com/element-ui/2.7.2/theme-chalk/index.css'
+  ],
+  js: [
+    // vue must at first!
+    'https://cdn.bootcss.com/vue/2.6.10/vue.min.js',
+    // vue-router
+    'https://cdn.bootcss.com/vue-router/3.0.6/vue-router.min.js',
+    // element-ui js
+    'https://cdn.bootcss.com/element-ui/2.7.2/index.js'
+  ]
+}
+
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -21,7 +37,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: './',
+  publicPath: '/block/',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
@@ -54,9 +70,19 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
+    },
+    // 不打包 vue element vue-router 
+    externals: {
+      vue: 'Vue',
+      'element-ui':'ELEMENT',
+      'vue-router':'VueRouter'
     }
   },
   chainWebpack(config) {
+    config.plugin('html').tap(args => {
+      args[0].cdn = cdn
+      return args
+    })
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 
