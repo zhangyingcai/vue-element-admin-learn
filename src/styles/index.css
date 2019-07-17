@@ -1,9 +1,21 @@
+html,body{
+  font-family: "Noto Sans", sans-serif;
+  background-color: #F3F3F3;
+}
 .text-left{ text-align:  left; }
 .text-center{ text-align: center; }
 .text-right{ text-align: right }
 .pd-1{padding: 1rem;}
+.pl-1{padding-left: 1rem;}
+.pr-1{padding-right: 1rem;}
+.pt-1{padding-top: 1rem;}
 .pb-1{padding-bottom: 1.5rem;}
 .mb-1{margin-bottom: 1.5rem;}
+.mt-2{margin-top: 1.5rem;}
+.mt-1{margin-top: 1rem;}
+.ml-1{margin-left: 1rem;}
+.mr-1{margin-right: 1rem;}
+.fr{float:right;}
 .head-link{text-decoration: none; color: #333}
 .black{
   color: #666;
@@ -17,14 +29,26 @@
   text-decoration: none;
 }
 .cell-text-ellipsis {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+.nomal-cell-text-ellipsis {
   display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.li-cell-text-ellipsis {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 @media (max-width: 960px) {
   .max-width{
-    max-width: 40px;
+    max-width: 60%;
   }
 }
 .all {
@@ -34,40 +58,38 @@
 .pt-1 {
   padding-top: 15px;
 }
-.mycard {
-  height: 100%;
-  padding: 5px;
-  border-radius: 15px;
-}
-.el-tabs--border-card,
-.el-card.is-always-shadow,
-.el-card.is-hover-shadow:focus,
-.el-card.is-hover-shadow:hover {
-  box-shadow: 0 2px 12px 0 rgba(146, 137, 255, 0.2);
-}
-.mytabs {
-  margin-top: 20px;
-  padding: 0 15px;
-  border-radius: 15px;
-  border: 1px solid #ebeef5;
-  box-shadow: 0 2px 12px 0 rgba(146, 137, 255, 0.2);
-}
-.mycard .address {
-  margin: 15px 0;
-}
+.footer,
 .page-container {
   width: 1140px;
   margin: 0 auto;
-  padding: 20px;
 }
 @media (max-width: 1140px) {
-  .header,
+  .footer,
   .page-container {
     width: auto;
   }
 }
-.header {
+
+.white-bg{
   background-color: white;
-  border-bottom: 1px solid #ebeef5;
-  padding: 18px 0;
+}
+.margin-auto{margin: auto}
+.lh-1{line-height: 1.5;}
+.el-tabs__header{margin: 0}
+.f12{font-size: .875rem}
+.f14{font-size: .9357rem}
+.f20{font-size: 1.75rem}
+.list-group{
+  display: flex;
+  flex-direction:column;
+}
+.list-group-item {
+  position: relative;
+  padding: 1.25rem 0;
+  border-top: 1px solid #F1F1F1;
+  border-bottom: 1px solid #F1F1F1;
+  margin-bottom: -1px;
+}
+.home-text{
+  color: #999;
 }

@@ -1,7 +1,15 @@
 <template>
   <div>
-    <el-table :data="data" v-loading="loading" fit highlight-current-row style="width: 100%">
-      <el-table-column label="排名" width="50">
+    <!-- <el-table :data="data" v-loading="loading" fit highlight-current-row style="width: 100%">
+      <el-table-column>
+        <template slot-scope="row">
+          <svg-icon v-if="(row.$index+1+(page-1?page-1:0)*limit) == 1" icon-class="first"></svg-icon>
+          <svg-icon v-if="(row.$index+1+(page-1?page-1:0)*limit) == 2" icon-class="second"></svg-icon>
+          <svg-icon v-if="(row.$index+1+(page-1?page-1:0)*limit) == 3" icon-class="third"></svg-icon>
+          <span v-if="(row.$index+1+(page-1?page-1:0)*limit) > 3">{{row.$index+1+(page-1?page-1:0)*limit}}</span>
+        </template>
+      </el-table-column> -->
+      <!-- <el-table-column label="排名" width="50">
         <template slot-scope="row">
           <svg-icon v-if="(row.$index+1+(page-1?page-1:0)*limit) == 1" icon-class="first"></svg-icon>
           <svg-icon v-if="(row.$index+1+(page-1?page-1:0)*limit) == 2" icon-class="second"></svg-icon>
@@ -28,8 +36,9 @@
         <template slot-scope="{row}">
           <span>{{ row.address === appeth ? '不计入流通量' : row.percentage }}</span><span v-if="row.address !== appeth">%</span>
         </template>
-      </el-table-column>
-    </el-table>
+      </el-table-column> -->
+    <!-- </el-table> -->
+    <HoldersTable v-loading="loading" :data="data" :page="page" :limit="limit" :celltype="celltype"/>
     <Pagination :autoScroll="false" :layout="layout" :total="total" :page.sync="page" :limit.sync="limit" @pagination="handleInfiniteOnLoad"/>
   </div>
 </template>
@@ -37,15 +46,18 @@
 import reqwest from 'reqwest'
 import config from '@/config/index'
 import Pagination from '@/components/Pagination'
+import HoldersTable from './Table'
 import { tokenValue, tokenMoney } from '../tokenfilters'
 
 export default {
+  name: 'Holders',
   filters: {
     tokenValue,
     tokenMoney
   },
   components: {
-    Pagination
+    Pagination,
+    HoldersTable
   },
   data() {
     return {
@@ -56,10 +68,11 @@ export default {
       limit: 30,
       layout: 'total, prev, next, jumper',
       total: 0,
-      appeth: config.appeth
+      appeth: config.appeth,
+      celltype: 'Holders'
     }
   },
-  beforeMount() {
+  created() {
     this.page = 1
     this.loading = true
     this.fetchData(res => {

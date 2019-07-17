@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="data" v-loading="loading" fit highlight-current-row style="width: 100%">
+    <!-- <el-table :data="data" v-loading="loading" fit highlight-current-row style="width: 100%">
       <el-table-column prop="value" label="销毁数量" width="160px">
         <template slot-scope="{row}">
           <span>- {{ row.value | tokenMoney}} BCAT</span>
@@ -28,7 +28,8 @@
           <span v-html="row.message"></span>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
+    <HoldersTable v-loading="loading" :data="data" :page="page" :limit="limit" :celltype="celltype"/>
     <Pagination :autoScroll="false" :layout="layout" :total="total" :page.sync="page" :limit.sync="limit" @pagination="handleInfiniteOnLoad"/>
   </div>
 </template>
@@ -37,13 +38,16 @@ import reqwest from 'reqwest'
 import config from '@/config/index'
 import Pagination from '@/components/Pagination'
 import { tokenMoney } from '../tokenfilters'
+import HoldersTable from '../Holders/Table'
 
 export default {
+  name: 'Destroy',
   filters: {
     tokenMoney
   },
   components: {
-    Pagination
+    Pagination,
+    HoldersTable
   },
   data() {
     return {
@@ -53,10 +57,11 @@ export default {
       page: 1,
       limit: 30,
       layout: 'total, prev, next, jumper',
-      total: 0
+      total: 0,
+      celltype: 'Destroy'
     }
   },
-  beforeMount() {
+  created() {
     this.page = 1
     this.loading = true
     this.fetchData(res => {

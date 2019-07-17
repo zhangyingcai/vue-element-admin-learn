@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="data" v-loading="loading" fit highlight-current-row style="width: 100%">
+    <!-- <el-table :data="data" v-loading="loading" fit highlight-current-row style="width: 100%">
       <el-table-column
         prop="hash"
         label="哈希">
@@ -38,7 +38,8 @@
           <span>{{ row.value | tokenValue(row.tokenDecimal) | tokenMoney}}</span>
         </template>
         </el-table-column>
-    </el-table>
+    </el-table> -->
+    <HoldersTable v-loading="loading" :data="data" :page="page" :limit="limit" :celltype="celltype" :address="address"/>
     <Pagination :autoScroll="false" :layout="layout" :total="total" :page.sync="page" :limit.sync="limit" @pagination="handleInfiniteOnLoad" />
   </div>
 </template>
@@ -47,7 +48,7 @@ import reqwest from 'reqwest'
 import config from '@/config/index'
 import Pagination from '@/components/Pagination'
 import { tokenValue, tokenMoney, showTag } from '../tokenfilters'
-import { truncate } from 'fs';
+import HoldersTable from '../Holders/Table'
 
 
 export default {
@@ -67,7 +68,8 @@ export default {
     }
   },
   components: {
-    Pagination
+    Pagination,
+    HoldersTable
   },
   data () {
     return {
@@ -78,6 +80,7 @@ export default {
       limit: 30,
       layout: 'total, prev, next, jumper',
       total: 0,
+      celltype: 'Transfers'
     }
   },
   beforeMount () {
@@ -90,7 +93,8 @@ export default {
         const value = res.balance
         const tag = res.tag
         this.total = res.total
-        this.$emit('updateTotal', value, tag)
+        const message = res.message
+        this.$emit('updateTotal', value, tag, message)
       }else{
         this.$message.error(res.message)
       }
@@ -105,7 +109,7 @@ export default {
     fetchData (callback) {
       reqwest({
         // url: 'https://explorer-web.api.btc.com/v1/eth/tokentxns/0xfdeaa4ab9fea519afd74df2257a21e5bca0dfd3f?page=1&size=10',
-        url:  `${config.apiurl}/accountinfo?address=${this.address}&page=${this.page}&offset=${this.limit}`,
+        url:  `${config.apiurl}/accountinfo?address=${this.address}&page=${this.page}&limit=${this.limit}`,
         type: 'json',
         method: 'get',
         crossOrigin: true
@@ -121,8 +125,9 @@ export default {
           this.data = res.result
           const value = res.balance
           const tag = res.tag
+          const message = res.message
           this.total = res.total  
-          this.$emit('updateTotal', value, tag)
+          this.$emit('updateTotal', value, tag, message)
         }else{
           this.$message.error(res.message)
         }

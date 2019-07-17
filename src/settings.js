@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '大猫城堡通用积分(BCAT)数据浏览器',
+  title: 'BCAT积分浏览器',
 
   /**
    * @type {boolean} true | false

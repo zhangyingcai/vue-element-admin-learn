@@ -2,12 +2,11 @@
   <div>
     <Header/>
     <div v-loading="loading" class="page-container">
-      <el-card class="text-left mycard">
-        <div slot="header">
-          <span class="all">交易hash</span>
-          <br>
-          <div class="pt-1 link cell-text-ellipsis">{{hash || hashinfo.hash}}</div>
-        </div>
+      <el-card class="mt-1 ml-1 mr-1 white-bg">
+        <el-row :gutter="20">
+          <el-col :span="8">交易hash:</el-col>
+          <el-col :span="16"><div class="link nomal-cell-text-ellipsis">{{hash || hashinfo.hash}}</div></el-col>
+        </el-row>
         <div v-if="nodata && hash">
           <el-row :gutter="20">
             <el-col :span="8">所在区块:</el-col>
@@ -21,7 +20,7 @@
             <el-col :span="8">发送方:</el-col>
             <el-col :span="16">
               <router-link
-                class="link cell-text-ellipsis"
+                class="link nomal-cell-text-ellipsis"
                 :to="`/accountinfo/${hashinfo.from}`"
               >{{hashinfo.from}}</router-link>
             </el-col>
@@ -30,7 +29,7 @@
             <el-col :span="8">接收方:</el-col>
             <el-col :span="16">
               <router-link
-                class="link cell-text-ellipsis"
+                class="link nomal-cell-text-ellipsis"
                 :to="`/accountinfo/${hashinfo.to}`"
               >{{hashinfo.to}}</router-link>
             </el-col>
@@ -82,7 +81,7 @@
             <el-col
               :span="16"
               v-html="hashinfo.message"
-              class="textwrap"
+              class="textwrap lh-1"
             ></el-col>
           </el-row>
         </div>
