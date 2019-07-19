@@ -48,7 +48,7 @@
           <el-col :xs="12" :lg="6" class="flex-box text-center f14">
             <svg-icon class="margin-auto home-img" icon-class="shuoming" />
             <span class="home-num">BCAT说明书</span>
-            <span><a href="https://www.bcat.one/paper" class="link" target="_blank">详细了解BCAT</a></span>
+            <span><a href="https://www.bcat.one/paper" class="link">详细了解BCAT</a></span>
           </el-col>
           <el-col :xs="12" :lg="6" class="flex-box text-center">
             <svg-icon class="margin-auto home-img" icon-class="fortawesome" />

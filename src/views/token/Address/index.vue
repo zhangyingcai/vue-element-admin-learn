@@ -40,7 +40,7 @@
           <div class="pb-1 bordert-1">
             <svg-icon class="big-svg" icon-class="mixin" />
           </div>
-          <a href="https://mixin.one/snapshots/94d6c6a3-3d3b-35f9-ae76-bbaa94c0caa9" class="link" target="_blank">Mixin</a>
+          <a href="https://mixin.one/snapshots/94d6c6a3-3d3b-35f9-ae76-bbaa94c0caa9" class="link">Mixin</a>
         </el-card>
       </el-col>
     </el-row>

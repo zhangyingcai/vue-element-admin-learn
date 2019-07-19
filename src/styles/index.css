@@ -93,3 +93,7 @@ html,body{
 .home-text{
   color: #999;
 }
+.el-tabs__item,
+a{
+  outline: none;
+}

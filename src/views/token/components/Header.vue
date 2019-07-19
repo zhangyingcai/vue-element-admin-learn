@@ -102,6 +102,7 @@ export default {
     & a {
       text-decoration: none;
       color: #333;
+      outline: none;
     }
   }
 }
@@ -168,6 +169,7 @@ export default {
     color: #333;
     vertical-align: middle;
     text-decoration: none;
+    outline: none;
   }
   border-bottom: 1px solid #eee;
   padding: 1.25rem 0;
