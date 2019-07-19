@@ -3,7 +3,7 @@
     <el-row :gutter="12">
       <el-col :lg="8" xs="24" class="pb-1">
         <el-card class="text-center myradius" shadow="hover">
-          <div class="pb-1">
+          <div class="pb-1 bordert-1">
             <svg-icon class="big-svg" icon-class="bcat-logo" />
           </div>
           <router-link class="link" :to="`/accountinfo/${config.appeth}`">BCAT官方地址</router-link>
@@ -11,7 +11,7 @@
       </el-col>
       <el-col :lg="8" xs="24" class="pb-1">
         <el-card class="text-center myradius" shadow="hover">
-          <div class="pb-1">
+          <div class="pb-1 bordert-1">
             <svg-icon class="big-svg" icon-class="otcbtc" />
           </div>
           <router-link class="link" :to="`/accountinfo/${config.otcbtceth}`">OTCBTC地址</router-link>
@@ -19,7 +19,7 @@
       </el-col>
       <el-col :lg="8" xs="24" class="pb-1">
         <el-card class="text-center myradius" shadow="hover">
-          <div class="pb-1">
+          <div class="pb-1 bordert-1">
             <svg-icon class="big-svg" icon-class="bcat-destroy" />
           </div>
           <router-link class="link" :to="`/accountinfo/${config.cleareth}`">BCAT销毁地址</router-link>
@@ -29,7 +29,7 @@
     <el-row class="pb-1" :gutter="12">
       <el-col :lg="8" xs="24" class="pb-1">
         <el-card class="text-center myradius" shadow="hover">
-          <div class="pb-1">
+          <div class="pb-1 bordert-1">
             <svg-icon class="big-svg" icon-class="bigONE" />
           </div>
           <router-link class="link" :to="`/accountinfo/${config.bigoneeth}`">BigONE地址</router-link>
@@ -37,7 +37,7 @@
       </el-col>
       <el-col :lg="8" xs="24">
         <el-card class="text-center myradius" shadow="hover">
-          <div class="pb-1">
+          <div class="pb-1 bordert-1">
             <svg-icon class="big-svg" icon-class="mixin" />
           </div>
           <a href="https://mixin.one/snapshots/94d6c6a3-3d3b-35f9-ae76-bbaa94c0caa9" class="link" target="_blank">Mixin</a>
@@ -66,9 +66,11 @@ export default {
   padding: 0;
 }
 .link{
-  display: block;
+  display: inline-block;
   text-decoration: none;
-  padding-top: 20px;
-  border-top: 1px solid #ececec;
+  margin-top: 20px;
+}
+.bordert-1{
+  border-bottom: 1px solid #ececec;
 }
 </style>

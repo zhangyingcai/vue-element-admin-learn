@@ -1,13 +1,13 @@
 <template>
   <div>
     <Header />
-    <div v-loading="loading" class="page-container">
+    <div class="page-container">
       <div class="mt-1 ml-1 mr-1 white-bg">
         <div>
           <svg-icon class="ml-1 mt-1" icon-class="broadcast" />
           <a href="https://www.bcat.one/archives/category/tz" class="fr link mt-1 mr-1" target="_blank">more >></a>
         </div>
-        <el-row>
+        <el-row v-loading="loading">
           <el-col v-for="(item, index) in bcatone" :key="index" class="ml-1 mr-1" :lg="7" :xs="22">
             <div class="li">
               <el-row class="myrow">
@@ -128,11 +128,6 @@ export default {
       return 1000000000 - this.total
     }
   },
-  watch: {
-    activeName: function(val) {
-      this.$router.push(`${this.$route.path}?tab=${val}`)
-    }
-  },
   created() {
     const tab = this.$route.query.tab
     if (tab) {
@@ -170,7 +165,6 @@ export default {
           this.apptotal = tokenValue(res.balance, this.tokenDecimal)
         }
       }).catch(() => {
-        this.loading = false
       })
     },
     getCurrentTotal() {
@@ -184,7 +178,6 @@ export default {
           this.currentTotal = res.result
         }
       }).catch(() => {
-        this.loading = false
       })
     },
     getBcatone() {
