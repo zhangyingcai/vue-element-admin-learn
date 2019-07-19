@@ -5,7 +5,7 @@
       <el-card class="mt-1 ml-1 mr-1 white-bg">
         <el-row :gutter="20">
           <el-col :span="8">交易hash:</el-col>
-          <el-col :span="16"><div class="link nomal-cell-text-ellipsis">{{hash || hashinfo.hash}}</div></el-col>
+          <el-col :span="16"><div class="link nomal-cell-text-ellipsis" @click="handleCopy">{{hash || hashinfo.hash}}</div></el-col>
         </el-row>
         <div v-if="nodata && hash">
           <el-row :gutter="20">
@@ -92,11 +92,12 @@
 <script>
 import reqwest from 'reqwest'
 import config from '@/config/index'
+import clip from '@/utils/clipboard'
 import { tokenValue, tokenMoney } from '../tokenfilters'
 import { truncate } from 'fs';
 import Header from '../components/Header'
 export default {
-  name: 'token',
+  name: 'txinfo',
   filters: {
     tokenValue,
     tokenMoney
@@ -142,6 +143,9 @@ export default {
   beforeMount() {
     this.getData()
   },
+  activated(){
+    this.getData()
+  },
   methods: {
     getData() {
       this.loading = true
@@ -168,6 +172,9 @@ export default {
         .always(() => {
           this.loading = false
         })
+    },
+    handleCopy(event) {
+      clip(this.hash, event)
     }
   }
 }
