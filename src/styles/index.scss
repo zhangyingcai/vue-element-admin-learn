@@ -59,7 +59,24 @@ div:focus {
   }
 }
 
-// main-container global css
-.app-container {
-  padding: 20px;
+// font-size
+
+html{
+  font-size: 0.26666666667vw;
+}
+.clearblack{color: #999;}
+.f16{font-size: 16rem;}
+.f18{font-size: 18rem;}
+body,html{background-color: #f7f7fa;}
+.mt-1{margin-top: 5vw;}
+.pd-m-1{padding: 2vw;}
+.pd-1{padding: 5vw;}
+.backwhite{background-color: white;}
+.text-center{text-align: center;}
+.contain{padding-bottom: 50px;}
+.weui-btn{
+  width: 80%;
+  margin-right: 4vw;
+  margin-left: 4vw;
+  border-radius: 8px;
 }
