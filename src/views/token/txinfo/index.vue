@@ -174,7 +174,7 @@ export default {
         })
     },
     handleCopy(event) {
-      clip(this.hash, event)
+      clip(this.hash || this.hashinfo.hash, event)
     }
   }
 }

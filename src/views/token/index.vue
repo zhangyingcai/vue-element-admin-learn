@@ -12,10 +12,10 @@
             <div class="li">
               <el-row class="myrow">
                 <el-col :span="20">
-                  <a class="link message nomal-cell-text-ellipsis" :href="item.link" target="_blank">{{ item.title.rendered }}</a>
+                  <a class="link message nomal-cell-text-ellipsis" :href="item.link" target="_blank">{{ item.title }}</a>
                 </el-col>
                 <el-col :span="4">
-                  <span class="message home-text">({{ new Date(item.date).getTime() | formatTime('{m}-{d}') }})</span>
+                  <span class="message home-text">({{ item.timeStamp | formatTime('{m}-{d}') }})</span>
                 </el-col>
               </el-row>
             </div>
@@ -183,15 +183,13 @@ export default {
     getBcatone() {
       this.loading = true
       reqwest({
-        url: `https://www.bcat.one/wp-json/wp/v2/posts?categories=4`,
+        url: `${config.apiurl}/bcatone/list?page=1&limit=3`,
         type: 'json',
         method: 'get',
         crossOrigin: true
       }).then((res) => {
-        if (res.length > 3) {
-          this.bcatone = res.slice(0, 3)
-        } else {
-          this.bcatone = res.slice(0, res.length)
+        if (res.code === 1) {
+          this.bcatone = res.result
         }
       }).always(() => {
         this.loading = false

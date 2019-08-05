@@ -62,7 +62,7 @@
           </div>
         </el-col>
         <el-col :span="8" class="text-center">
-          <span class="home-text">{{ celldata.timeStamp | formatTime('{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+          <span class="home-text">{{ celldata.timeStamp | formatTime('{y}-{m}-{d}') }}</span>
         </el-col>
       </el-row>
     </div>

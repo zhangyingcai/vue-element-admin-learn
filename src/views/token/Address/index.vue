@@ -22,7 +22,7 @@
           <div class="pb-1 bordert-1">
             <svg-icon class="big-svg" icon-class="bcat-destroy" />
           </div>
-          <router-link class="link" :to="`/accountinfo/${config.cleareth}`">BCAT销毁地址</router-link>
+          <router-link class="link" :to="`/accountinfo/${config.cleareth}`">BCAT预销毁地址</router-link>
         </el-card>
       </el-col>
     </el-row>
