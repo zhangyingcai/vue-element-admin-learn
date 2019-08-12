@@ -1,15 +1,15 @@
 <template>
   <div>
     <section class="user-info">
-      <img class="user-atatar" :src="user.avatar" alt="">
-      <div class="clearblack f16">名字{{ user.name }}</div>
+      <img class="user-atatar" :src="avatar || require('@/assets/user.jpeg')" alt="">
+      <div class="clearblack f16">{{ name }}</div>
     </section>
-    <van-cell class="mt-1" title="卖出订单" is-link to="index" value="0" />
-    <van-cell title="买入订单" is-link to="index" value="0" />
-    <van-cell title="正在出售" is-link to="index" value="0" />
-    <van-cell title="已售商品" is-link to="index" value="0" />
+    <van-cell class="mt-1" title="卖出订单" is-link to="/order/sell" value="0" />
+    <van-cell title="买入订单" is-link to="/order/buy" value="0" />
+    <van-cell title="正在出售" is-link to="/order/selling" value="0" />
+    <van-cell title="已售商品" is-link to="/order/selled" value="0" />
 
-    <van-cell class="mt-1" title="退出登录" @click="signout" is-link/>
+    <van-cell class="mt-1" title="退出登录" @click="signout" is-link />
   </div>
 </template>
 <script>
@@ -27,7 +27,11 @@ export default {
     ])
   },
   methods: {
-    signout() {}
+    signout() {
+      this.$store.dispatch('user/logout').then(()=>{
+        location.reload()
+      })
+    }
   }
 }
 </script>

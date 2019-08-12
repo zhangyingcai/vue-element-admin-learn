@@ -80,3 +80,54 @@ body,html{background-color: #f7f7fa;}
   margin-left: 4vw;
   border-radius: 8px;
 }
+.fr{ float: right; }
+.product-cell{
+  padding: 4vw;
+  border-bottom: 1px solid #f4f4f4;
+}
+.product-img{
+  display: block;
+  width: 20vw;
+  height: 20vw;
+  margin: 0 auto;
+}
+.product-name{
+  display: block;
+  font-size: 16rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #333;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.product-introduction{
+  font-size: 12rem;
+  line-height: 1.2;
+  color: #999;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.product-price{
+  float: right;
+  &>.price-number{
+    color: red;
+    font-size: 16rem;
+    font-weight: 400;
+    max-width: 50vw;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  &>.price-token{
+    font-style: italic;
+    color: #999;
+  }
+}
+.token-icon{
+  widows: 5vw;
+  height: 5vw;
+  float: right;
+}

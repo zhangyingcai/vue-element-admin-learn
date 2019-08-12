@@ -40,6 +40,7 @@ export const constantRoutes = [
 
   {
     path: '/',
+    name: '/',
     component: () => import('@/views/home/index'),
     meta: {
       title: '首页'
@@ -86,9 +87,26 @@ export const constantRoutes = [
       title: '登录'
     }
   },
+  {
+    path: '/order/:type',
+    name: 'Order',
+    component: () => import('@/views/order/index'),
+    meta: {
+      title: '我的'
+    },
+    props: true
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/404'),
+    meta: {
+      title: 'error'
+    }
+  },
 
   // 404 page must be placed at the end !!!
-  // { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({

@@ -1,10 +1,13 @@
 <template>
-  <van-list
+  <div>
+    <van-nav-bar :title="typeTitle[type]" left-arrow @click-left="onClickLeft" fixed/>
+    <van-list
     v-model="loading"
     :finished="finished"
     finished-text="没有更多了"
-    class="contain"
-    @load="onLoad">
+    class="orders"
+    @load="onLoad"
+  >
     <van-cell
       v-for="(item, key) in list"
       :key="key"
@@ -35,21 +38,33 @@
       </div>
     </van-cell>
   </van-list>
+  </div>
 </template>
 <script>
+// 根据 type 展示不同的内容
+const typeTitle = {
+  'selling': '正在出售',
+  'sell': '卖出订单',
+  'buy': '买入订单',
+  'selled': '已售商品'
+}
 import { getProducts } from '@/api/home'
 export default {
-  name: 'Home',
+  name: 'OrderList',
+  props: {
+    type: {
+      type: String,
+      default: 'sell'
+    }
+  },
   data() {
     return {
       loading: false,
       finished: false,
-      list: []
+      list: [],
+      typeTitle: typeTitle
     }
   },
-  // created() {
-  //   this.$store.dispatch('user/login')
-  // },
   methods: {
     onLoad() {
       this.fetchData()
@@ -57,17 +72,23 @@ export default {
     fetchData() {
       this.loading = true
       getProducts()
-      .then((response) => {
-        this.list = Array.prototype.concat(this.list, response.data.items) || []
-      }).catch((err) => {
-        console.log(err)
-      }).finally(() => {
-        this.loading = false
-      })
+        .then((response) => {
+          this.list = Array.prototype.concat(this.list, response.data.items) || []
+        }).catch((err) => {
+          console.log(err)
+        }).finally(() => {
+          this.loading = false
+        })
     },
-    toinfo(item) {
-      this.$router.push({ name: 'Products', params: { id: item.id }})
+    toinfo() {},
+    onClickLeft() {
+      this.$router.back()
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+.orders{
+  padding-top: 46px;
+}
+</style>

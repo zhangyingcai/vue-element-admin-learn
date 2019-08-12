@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Dialog, Toast, Notify } from 'vant'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -14,7 +14,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-
+    console.log(store.getters.token)
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key
@@ -47,19 +47,14 @@ service.interceptors.response.use(
 
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000) {
-      Message({
-        message: res.message || 'error',
-        type: 'error',
-        duration: 5 * 1000
-      })
+      Notify.fail(res.message)
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
+        Dialog.confirm({
+          title: '温馨提示',
+          message: '你已经被登出，请重新登录!'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {
             location.reload()
@@ -73,11 +68,7 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    Notify.fail(error.message)
     return Promise.reject(error)
   }
 )

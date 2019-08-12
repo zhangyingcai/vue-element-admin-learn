@@ -73,11 +73,31 @@ export default [
   // user logout
   {
     url: '/user/logout',
-    type: 'post',
+    type: 'get',
     response: _ => {
       return {
         code: 20000,
         data: 'success'
+      }
+    }
+  },
+  {
+    url: '/user/testLogin',
+    type: 'get',
+    response: config => {
+      const token = tokens['admin']
+
+      // mock error
+      if (!token) {
+        return {
+          code: 60204,
+          message: 'Account and password are incorrect.'
+        }
+      }
+
+      return {
+        code: 20000,
+        data: token
       }
     }
   }

@@ -1,10 +1,9 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function login() {
   return request({
     url: '/user/login',
-    method: 'post',
-    data
+    method: 'get'
   })
 }
 
@@ -19,6 +18,14 @@ export function getInfo(token) {
 export function logout() {
   return request({
     url: '/user/logout',
-    method: 'post'
+    method: 'get'
+  })
+}
+
+// 模拟登陆
+export function testLogin() {
+  return request({
+    url: '/user/testLogin',
+    method: 'get'
   })
 }

@@ -7,8 +7,8 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/','/add','/mine','/home', '/products', '/login'] // no redirect whitelist
-const whiteNameList = ['/','Add','Mine','Home', 'Products', 'Login']
+// const whiteList = ['/', '/add', '/mine', '/home', '/products', '/login'] // no redirect whitelist
+const whiteNameList = ['/', 'Home', 'Products', 'Login', '404']// 'Add','Mine',
 
 // 全局前置守卫
 router.beforeEach(async(to, from, next) => {
@@ -21,6 +21,11 @@ router.beforeEach(async(to, from, next) => {
   // determine whether the user has logged in
   const hasToken = getToken()
 
+  console.log(hasToken)
+  if (!store.getters.token && hasToken) {
+    // await store.commit('user/SET_TOKEN', hasToken)
+  }
+
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
@@ -28,6 +33,7 @@ router.beforeEach(async(to, from, next) => {
       NProgress.done()
     } else {
       const hasGetUserInfo = store.getters.name
+      console.log(store.getters.name)
       if (hasGetUserInfo) {
         next()
       } else {

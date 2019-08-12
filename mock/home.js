@@ -4,7 +4,7 @@ const data = Mock.mock({
   'items|1-10': [{
     id: '@id',
     name: '@sentence(1, 5)',
-    introduction: '@sentence(2, 6)',
+    introduction: '@sentence(2, 40)',
     'price': 10,
     cover_urls: ['https://flowin.oss-cn-hongkong.aliyuncs.com/r9j0srqpeabfa549jz2b6iajqqf5?x-oss-process=image%2Fresize%2Cw_750'],
     currency: {
