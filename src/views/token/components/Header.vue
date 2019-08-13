@@ -8,7 +8,7 @@
         </router-link>
         <ul class="nav">
           <li class="list-item">
-            <a href="/">BCAT浏览器首页</a>
+            <a href="#/">BCAT浏览器首页</a>
           </li>
           <li class="list-item">
             <a href="https://www.bcat.one" target="_blank">BCAT官网</a>
