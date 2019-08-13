@@ -64,6 +64,15 @@ export const constantRoutes = [
     props: true
   },
   {
+    path: '/productorder/:id',
+    name: 'ProductOrder',
+    component: () => import('@/views/home/products/order'),
+    meta: {
+      title: '订单详情'
+    },
+    props: true
+  },
+  {
     path: '/add',
     name: 'Add',
     component: () => import('@/views/add/index'),

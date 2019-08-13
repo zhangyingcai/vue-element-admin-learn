@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <van-nav-bar title="商品详情" left-arrow @click-left="onClickLeft" fixed/>
+    <van-nav-bar :title="title" left-arrow @click-left="onClickLeft" fixed/>
     <van-swipe class="goods-swipe" :autoplay="3000">
       <van-swipe-item v-for="thumb in goods.thumb" :key="thumb">
         <img :src="thumb">
@@ -59,6 +59,7 @@ export default {
   },
   data() {
     return {
+      title: this.$route.meta.title,
       goods: {
         id: 1,
         name: '美国伽力果',
@@ -76,7 +77,7 @@ export default {
           symbol: 'XIN'
         },
         seller: {
-          user_id: undefined,
+          user_id: '122',
           full_name: '张'
         }
       },
@@ -125,6 +126,7 @@ export default {
         this.$router.push(`/login?redirect=${this.$route.path}`)
       } else {
         // buy
+        this.$router.push(`/productorder/null`)
       }
     },
     hanleDelete(e) {

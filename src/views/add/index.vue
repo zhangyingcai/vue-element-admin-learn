@@ -2,7 +2,7 @@
   <div class="contain">
     <div class="add-order-title">商品信息</div>
     <van-cell-group>
-      <van-field v-model="name" required clearable label="商品名称" placeholder="请输入用户名"/>
+      <van-field v-model="name" required clearable label="商品名称" placeholder="请输入商品名称"/>
 
       <van-field
         v-model="introduction"
