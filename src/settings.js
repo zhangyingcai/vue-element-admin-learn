@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'BCAT积分浏览器',
+  title: '练习小册',
 
   /**
    * @type {boolean} true | false
